@@ -87,13 +87,6 @@ var individual = {
 					emptyText: 'Seleccione',
 	                editable: false,
 	                mode: 'remote',
-	                /*listeners: {
-				    	render : function(field,nval,oval) {
-				    		// var combo = Ext.getCmp('contactterm');
-	                		field.setValue('2');
-				    	}
-				    
-				    },*/
 	            	store: ['Ninguno', 'De contado', '8 días', '15 días', '30 días', '60 días' ]
 				},
 				{
@@ -109,10 +102,6 @@ var individual = {
 					fieldLabel: 'Proveedor'
 				},
 				{
-					name: 'internalContacts',
-					fieldLabel: 'Contactos internos'
-				},
-				{
 					name: 'email',
 					fieldLabel: 'E-mail',
 					vtype: 'email'
@@ -121,7 +110,7 @@ var individual = {
 					xtype: 'textareafield',
 					name: 'observations',
 					fieldLabel: 'Observación',
-					height: 85
+					height: 132
 				},
 	        ]
 	    },
