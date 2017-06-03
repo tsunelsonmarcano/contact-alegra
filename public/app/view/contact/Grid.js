@@ -4,6 +4,8 @@ Ext.define('CrudExt.view.contact.Grid',{
 	itemId: 'contactGrid',
 	xtype: 'contactgrid',
 	store : 'Contacts',
+	stripeRows: true,
+    columnLines: true,
 	initComponent: function(){
 
 		this.columns = [

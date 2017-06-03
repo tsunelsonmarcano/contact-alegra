@@ -11,7 +11,8 @@ Ext.define('CrudExt.store.Contacts',{
 	autoSync	: false,
 	remoteFilter: true,
 	storeId		: 'Contacts',
-	pageSize	: 20,
+	leadingBufferZone: 20,
+	pageSize	: 10,
 	model		: 'CrudExt.model.Contact',
 	proxy		: {
 		type: 'ajax',
@@ -32,7 +33,8 @@ Ext.define('CrudExt.store.Contacts',{
 			root: 'data',
 			rootProperty: 'data',
 			successProperty: 'success',
-			messageProperty: 'message'
+			messageProperty: 'message',
+			totalProperty: 'results'
 		},
 
 		writer: Ext.create('Ext.data.writer.Json',{
@@ -60,7 +62,7 @@ Ext.define('CrudExt.store.Contacts',{
 					email: makeUndefined(record.data.email),  
 					priceList: record.data.priceList, 
 					seller: makeUndefined(record.data.seller),
-					term: record.data.term, 
+					term: makeUndefined(record.data.term), 
 					address: {
 						address: makeUndefined(record.data.address),
 						city: makeUndefined(record.data.city)

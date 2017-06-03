@@ -98,9 +98,30 @@ Ext.define('CrudExt.controller.Contact',{
 			grid = me.getList(),
 			store = grid.getStore(),
 			record = basicForm.getRecord(),
-			values = basicForm.getValues();
+			values = basicForm.getValues(),
+			internalContacts = [],
+		 	inernalcontactgrid = Ext.ComponentQuery.query('#inernalcontactgrid')[0];
 
+		/*
 		
+		Código para insertar contactos internos desde el gridview
+
+		inernalcontactgrid.getStore().each(function(record) {
+		    internalContacts.push({
+		    	id : record.data.internal_id,
+            	name : record.data.internal_name,
+            	lastName : record.data.internal_lastName,
+            	email : record.data.internal_email,
+            	phone : record.data.internal_phone,
+            	mobile : record.data.internal_mobile,
+            	sendNotifications : record.data.internal_sendNotifications
+		    });
+		});
+
+		if (JSON.stringify(internalContacts) === '[{}]') internalContacts = undefined;
+
+		values.internalContacts = internalContacts;*/
+
 		if (basicForm.isValid()) {
 			if(!record){
 				record = Ext.create('CrudExt.model.Contact');
@@ -112,10 +133,10 @@ Ext.define('CrudExt.controller.Contact',{
 
 			store.sync();
 			win.close();
-
+			location.reload();
 		} else {
 			Ext.Msg.alert('Error', 'Error al guardar los datos');
-		}		
+		}
 	},
 
 	/**
