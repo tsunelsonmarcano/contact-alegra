@@ -88,16 +88,26 @@ class IndexController extends Zend_Controller_Action
         if (count($filter)) {
             $filter = json_decode($filter);
             $query = trim($filter[0]->property);
-            $this->_client->setUri($this->_uri . "?start=$start&query=$query");
+            $this->_client->setUri($this->_uri . "?start=$start&limit=$limit&metadata=true&query=$query");
             $response = $this->_client->request();
             $data = $this->_formattData($response->getBody());
-            return $this->_helper->json->sendJson($data);
+            return $this->_helper->json->sendJson([
+                'success' => true,
+                'results' => $data->metadata->total,
+                'data' => $data->data
+            ]);
         }
 
-        $this->_client->setUri($this->_uri . "?start=$start");
+
+        $this->_client->setUri($this->_uri . "?start=$start&limit=$limit&metadata=true");
         $response = $this->_client->request();
         $data = $this->_formattData($response->getBody());
-        return $this->_helper->json->sendJson($data);
+
+        return $this->_helper->json->sendJson([
+            'success' => true,
+            'results' => $data->metadata->total,
+            'data' => $data->data
+        ]);
     }
 
     /**
@@ -226,20 +236,22 @@ class IndexController extends Zend_Controller_Action
      * Format type data
      *
      * @param string $data
-     * @return json
+     * @return stdClass
      */
     private function _formattData($data)
     {
         $jsonData = json_decode($data);
-        foreach ($jsonData as $key => $value) {
-            if (isset($value->type[0]) && $value->type[0] === 'client') $value->client = TRUE;
-            elseif (isset($value->type[0]) && $value->type[0] === 'provider') $value->provider = TRUE;
+        if (isset($jsonData->data)) {
+            foreach ($jsonData->data as $key => $value) {
+                if (isset($value->type[0]) && $value->type[0] === 'client') $value->client = TRUE;
+                elseif (isset($value->type[0]) && $value->type[0] === 'provider') $value->provider = TRUE;
 
-            if (isset($value->type[1]) && $value->type[1] === 'client') $value->client = TRUE;
-            elseif (isset($value->type[1]) && $value->type[1] === 'provider') $value->provider = TRUE;
+                if (isset($value->type[1]) && $value->type[1] === 'client') $value->client = TRUE;
+                elseif (isset($value->type[1]) && $value->type[1] === 'provider') $value->provider = TRUE;
 
-            if ( isset($value->term->id) && isset($value->term->name) ) $value->term = [ $value->term->name ];
-            if ( isset($value->priceList->id) && isset($value->priceList->name) ) $value->priceList = [ $value->priceList->name ];
+                if ( isset($value->term->id) && isset($value->term->name) ) $value->term = [ $value->term->name ];
+                if ( isset($value->priceList->id) && isset($value->priceList->name) ) $value->priceList = [ $value->priceList->name ];
+            }
         }
         return $jsonData;
     }

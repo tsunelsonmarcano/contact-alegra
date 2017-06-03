@@ -132,7 +132,6 @@ var individual = {
     ]
 };
 
-
 Ext.define('CrudExt.view.contact.Form', {
 	extend: 'Ext.form.Panel',
 	autoScroll: true,
@@ -155,38 +154,63 @@ Ext.define('CrudExt.view.contact.Form', {
 			individual, 
 			Ext.create('Ext.grid.Panel', {
 			    title: 'Contactos Internos',
-			    //store: 'internalContacts',
+			    xtype: 'inernalcontactgrid',
+			    itemId: 'inernalcontactgrid',
+			    store: [
+				    {
+				    	internal_id: '',
+				    	internal_name: '',
+						internal_lastName: '',
+						internal_email: '',
+						internal_phone: '',
+						internal_mobile: '',
+						internal_sendNotifications: ''
+				    }
+			    ],
 			    columns: [
 				    {
 				        text: 'Nomnbre',
-				        dataIndex: 'internal_contact_name',
+				        dataIndex: 'internal_name',
 				        flex: 1,
+				        editor: 'textfield'
 				    },
 				    {
 				        text: 'Apellido',
-				        dataIndex: 'internal_contact_lastname',
+				        dataIndex: 'internal_lastName',
 				        flex: 1,
+				        editor: 'textfield'
 				    },
 				    {
 				        text: 'Correo',
-				        dataIndex: 'internal_contact_email',
+				        dataIndex: 'internal_email',
 				        flex: 1,
+				        editor: 'textfield'
 				    },
 				    {
 				        text: 'Teléfono',
-				        dataIndex: 'internal_contact_phone',
+				        dataIndex: 'internal_phone',
 				        flex: 1,
+				        editor: 'textfield'
 				    },
 				    {
 				        text: 'Celular',
-				        dataIndex: 'internal_contact_mobile',
+				        dataIndex: 'internal_mobile',
 				        flex: 1,
+				        editor: 'textfield'
 				    },
 				    {
 				        text: 'Enviar notificación',
-				        dataIndex: 'internal_contact_notification',
+				        dataIndex: 'internal_sendNotifications',
 				        flex: 1,
+				        editor: 'checkboxfield'
 				    },
+			    ],
+
+			    selType: 'cellmodel',
+			    plugins: [
+			        Ext.create('Ext.grid.plugin.CellEditing', {
+			            clicksToEdit: 1
+			        })
 			    ],
 			    height: '100%',
 			    width: '100%',
