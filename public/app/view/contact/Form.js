@@ -142,7 +142,7 @@ Ext.define('CrudExt.view.contact.Form', {
 		this.items = [
 			individual, 
 			Ext.create('Ext.grid.Panel', {
-			    title: 'Contactos Internos',
+			    title: 'Contactos Internos (próximamente)',
 			    xtype: 'inernalcontactgrid',
 			    itemId: 'inernalcontactgrid',
 			    store: [
@@ -223,7 +223,7 @@ Ext.define('CrudExt.view.contact.Form', {
 				}
 			},
 			{
-				text: 'Asociar Persona',
+				text: 'Asociar Persona (próximamente)',
 				action: 'associate',
 				itemId: 'associate',
 			},
