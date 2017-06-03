@@ -33,7 +33,7 @@ Para correr el proyecto, tienes que crear un vhost, por ejemplo:
 </VirtualHost>
 ```
 
-Y configurar las crendenciales de alegra, reempla el archivo de ```application/configs/application.ini.example``` por ```application/configs/application.ini``` y coloca el siguiente contenido en el archivo de configuración:
+Y configurar las crendenciales de alegra, reemplaza el archivo de ```application/configs/application.ini.example``` por ```application/configs/application.ini``` y coloca el siguiente contenido en el archivo de configuración:
 ```
 alegra.uri = "URL de la api de contactos de alegra"
 alegra.username = "example@example.com"
