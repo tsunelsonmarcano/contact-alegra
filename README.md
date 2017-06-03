@@ -6,7 +6,7 @@ Se implementa la api de alegra para gestionar contactos, usando Zend Framework 1
 ### Obteniendo las credenciales de alegra para utilizar la api
 
 * [Página oficial de alegra](https://www.alegra.com/) Crear una cuenta en alegra
-* [Página para visualizar las credenciales ](https://app.alegra.com/configuration/api) Verás el corre y el token
+* [Página para visualizar las credenciales ](https://app.alegra.com/configuration/api) Verás el correo y el token
 
 ### Consultar la documentación de la api
 
