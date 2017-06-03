@@ -11,5 +11,3 @@ Se implementa la api de alegra para gestionar contactos, usando Zend Framework 1
 ### Consultar la documentación de la api
 
 * [Api de alegra](https://developer.alegra.com/docs/) 
-
-
