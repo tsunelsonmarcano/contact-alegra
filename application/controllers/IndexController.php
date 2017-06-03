@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * class IndexController
+ * 
+ * @author Nelson Marcano <[<tsu.nelsonmarcano@gmail.com>]>
+ */
 class IndexController extends Zend_Controller_Action
 {
     /**
