@@ -47,8 +47,8 @@ Ext.define('CrudExt.store.Contacts',{
 					client = Ext.ComponentQuery.query("#contactclient")[0],
 					provider = Ext.ComponentQuery.query("#contactprovider")[0];
 
-				if (client.checked === true) 	typeContact.push('client');
-				if (provider.checked === true) 	typeContact.push('provider');
+				if (client && client.checked === true) 	typeContact.push('client');
+				if (provider && provider.checked === true) 	typeContact.push('provider');
 
 				return {
 					id: record.data.id,
