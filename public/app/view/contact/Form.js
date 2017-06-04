@@ -142,63 +142,126 @@ Ext.define('CrudExt.view.contact.Form', {
 		this.items = [
 			individual, 
 			Ext.create('Ext.grid.Panel', {
-			    title: 'Contactos Internos (próximamente)',
+			    title: 'Contactos Internos',
 			    xtype: 'inernalcontactgrid',
 			    itemId: 'inernalcontactgrid',
-			    store: [
-				    {
-				    	internal_id: '',
-				    	internal_name: '',
-						internal_lastName: '',
-						internal_email: '',
-						internal_phone: '',
-						internal_mobile: '',
-						internal_sendNotifications: ''
-				    }
-			    ],
+			    store: 'InternalContacts',
 			    columns: [
 				    {
-				        text: 'Nomnbre',
+				        header: 'Nomnbre',
 				        dataIndex: 'internal_name',
 				        flex: 1,
-				        editor: 'textfield'
+				        editor: {
+				            xtype: 'textfield',
+				            selectOnFocus: true
+				        },
+				        sortable: false,
+				        align: 'center',
+				        width: 100,
 				    },
 				    {
-				        text: 'Apellido',
+				        header: 'Apellido',
 				        dataIndex: 'internal_lastName',
 				        flex: 1,
-				        editor: 'textfield'
+				        editor: {
+				            xtype: 'textfield',
+				            selectOnFocus: true
+				        },
+				        sortable: false,
+				        align: 'center',
 				    },
 				    {
-				        text: 'Correo',
+				        header: 'Correo',
 				        dataIndex: 'internal_email',
 				        flex: 1,
-				        editor: 'textfield'
+				        editor: {
+				            vtype: 'email',
+				            selectOnFocus: true
+				        },
+				        sortable: false,
+				        align: 'center',
 				    },
 				    {
-				        text: 'Teléfono',
+				        header: 'Teléfono',
 				        dataIndex: 'internal_phone',
 				        flex: 1,
-				        editor: 'textfield'
+				        editor: {
+				            xtype: 'textfield',
+				            selectOnFocus: true
+				        },
+				        sortable: false
 				    },
 				    {
-				        text: 'Celular',
+				        header: 'Celular',
 				        dataIndex: 'internal_mobile',
 				        flex: 1,
-				        editor: 'textfield'
+				        editor: {
+				            xtype: 'textfield',
+				            selectOnFocus: true
+				        },
+				        sortable: false,
+
 				    },
 				    {
-				        text: 'Enviar notificación',
+				    	xtype: 'checkcolumn',
+				        header: 'Enviar notificación',
 				        dataIndex: 'internal_sendNotifications',
 				        flex: 1,
-				        editor: 'checkboxfield'
+				        align: 'center',
+				        sortable: false,
+				        renderer: function(value, meta){
+				        	meta.tdAttr = 'data-qtip="Si selecciona sí, debe ingresar un correo, de lo contrario se producirá un error y no se guardará el registro"';
+					        if (value === true) {
+					            return 'Sí';
+					        }
+					        return 'No';
+					    }
 				    },
+				    {
+				        xtype: 'actioncolumn',
+				        header: 'Eliminar',
+				        width: '10%',
+				        align: 'center',
+				        items: [{
+				            icon   : 'https://cdn1.alegra.com/images/icons/delete.png', 
+				            tooltip: 'Eliminar fila',
+				            handler: function(grid, rowIndex) {
+				                grid.getStore().removeAt(rowIndex);
+				            }
+				        }],
+				        sortable: false
+					},
 			    ],
-
+			    dockedItems: [
+					{
+						xtype: 'toolbar',
+						dock: 'top',
+						items: [
+							{
+								xtype: 'button',
+								text: 'Agregar',
+								action: 'addInternal',
+								handler: function(bt) {
+					            	var gridInternalContacts = Ext.ComponentQuery.query("#inernalcontactgrid")[0],
+					            		store = gridInternalContacts.getView().getStore();
+					                store.add({
+					                	internal_name: '',
+										internal_lastName: '',
+										internal_email: '',
+										internal_phone: '',
+										internal_mobile: '',
+										internal_sendNotifications: ''
+					                });
+					            }
+							},
+						]
+					},
+				],
 			    selType: 'cellmodel',
 			    plugins: [
 			        Ext.create('Ext.grid.plugin.CellEditing', {
-			            clicksToEdit: 1
+			            clicksToEdit: 1,
+
 			        })
 			    ],
 			    height: '100%',
@@ -221,11 +284,6 @@ Ext.define('CrudExt.view.contact.Form', {
 				handler: function(){
 					this.up('window').close();
 				}
-			},
-			{
-				text: 'Asociar Persona (próximamente)',
-				action: 'associate',
-				itemId: 'associate',
 			},
 		];
 			

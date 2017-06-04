@@ -1,8 +1,8 @@
 Ext.define('CrudExt.controller.Contact',{
 	extend: 'Ext.app.Controller',
 	views: ['contact.Grid', 'contact.Form', 'contact.Window'],
-	models: ['Contact'],
-	stores: ['Contacts'],
+	models: ['Contact', 'InternalContact'],
+	stores: ['Contacts', 'InternalContacts'],
 	refs: [
         {
             ref: 'list',
@@ -41,7 +41,25 @@ Ext.define('CrudExt.controller.Contact',{
 	 */
 	add: function(){
 		var me = this,
-			view = Ext.widget('contactedit');
+			view = Ext.widget('contactedit'),
+			gridInternalContacts = Ext.ComponentQuery.query("#inernalcontactgrid")[0];
+
+
+		var newData = Ext.create('Ext.data.Store', {
+			model: 'CrudExt.model.InternalContact',
+			data : [
+				{
+			    	internal_name: '',
+					internal_lastName: '',
+					internal_email: '',
+					internal_phone: '',
+					internal_mobile: '',
+					internal_sendNotifications: ''
+			    }
+			]
+		});
+
+		gridInternalContacts.reconfigure(newData);
 
 		view.setTitle('Agregando contacto');
 	},
@@ -77,7 +95,28 @@ Ext.define('CrudExt.controller.Contact',{
 		if (records.length === 1) {
 			var record = records[0],
 				view = Ext.widget('contactedit'),
-				form = view.down('contactform').getForm();
+				form = view.down('contactform').getForm(),
+				gridInternalContacts = Ext.ComponentQuery.query("#inernalcontactgrid")[0],
+				interContactsArray = [];
+
+			for (var i in record.data.internalContacts) {
+				interContactsArray.push({
+			    	internal_id: record.data.internalContacts[i].id,
+			    	internal_name: record.data.internalContacts[i].name,
+					internal_lastName: record.data.internalContacts[i].lastName,
+					internal_email: record.data.internalContacts[i].email,
+					internal_phone: record.data.internalContacts[i].phone,
+					internal_mobile: record.data.internalContacts[i].mobile,
+					internal_sendNotifications: record.data.internalContacts[i].sendNotifications
+			    });
+			}
+
+			var newData = Ext.create('Ext.data.Store', {
+				model: 'CrudExt.model.InternalContact',
+				data : interContactsArray
+			});
+
+			gridInternalContacts.reconfigure(newData);
 			
 			form.loadRecord(record);
 			view.setTitle('Modificando contacto');
@@ -100,27 +139,38 @@ Ext.define('CrudExt.controller.Contact',{
 			record = basicForm.getRecord(),
 			values = basicForm.getValues(),
 			internalContacts = [],
-		 	inernalcontactgrid = Ext.ComponentQuery.query('#inernalcontactgrid')[0];
-
-		/*
-		
-		Código para insertar contactos internos desde el gridview
+		 	inernalcontactgrid = Ext.ComponentQuery.query('#inernalcontactgrid')[0],
+			makeUndefined = function(value) {
+			    return value != '' ? value : undefined;
+			};
 
 		inernalcontactgrid.getStore().each(function(record) {
-		    internalContacts.push({
-		    	id : record.data.internal_id,
-            	name : record.data.internal_name,
-            	lastName : record.data.internal_lastName,
-            	email : record.data.internal_email,
-            	phone : record.data.internal_phone,
-            	mobile : record.data.internal_mobile,
-            	sendNotifications : record.data.internal_sendNotifications
-		    });
+			var fields = record.data,
+			gridData = {
+		    	id : makeUndefined(fields.internal_id),
+            	name : makeUndefined(fields.internal_name),
+            	lastName : makeUndefined(fields.internal_lastName),
+            	email : makeUndefined(fields.internal_email),
+            	phone : makeUndefined(fields.internal_phone),
+            	mobile : makeUndefined(fields.internal_mobile),
+            	sendNotifications : makeUndefined(fields.internal_sendNotifications)
+		    };
+		
+			if (JSON.stringify(gridData) !== '{}') {
+				internalContacts.push(gridData);
+			}
 		});
 
-		if (JSON.stringify(internalContacts) === '[{}]') internalContacts = undefined;
+		if (internalContacts.length === 0) internalContacts = [{
+			name: '',
+			lastName: '',
+			email: '',
+			phone: '',
+			mobile: '',
+			sendNotifications: ''
+		}];
 
-		values.internalContacts = internalContacts;*/
+		values.internalContacts = internalContacts;
 
 		if (basicForm.isValid()) {
 			if(!record){
@@ -131,9 +181,21 @@ Ext.define('CrudExt.controller.Contact',{
 				record.set(values);
 			}
 
-			store.sync();
+			store.sync({
+				success: function() {
+	                location.reload();
+	            },
+	            failure: function() {
+	                console.log("failed...");
+	            },
+	            callback: function()  {
+	                console.log("calling callback");
+	            },
+	            scope: this
+			});
+
 			win.close();
-			location.reload();
+		
 		} else {
 			Ext.Msg.alert('Error', 'Error al guardar los datos');
 		}
@@ -166,5 +228,5 @@ Ext.define('CrudExt.controller.Contact',{
                 }
             });
 		}
-	}
+	},
 });

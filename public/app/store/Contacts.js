@@ -68,7 +68,8 @@ Ext.define('CrudExt.store.Contacts',{
 						city: makeUndefined(record.data.city)
 					},
 					type: typeContact,
-					internalContacts: makeUndefined(record.data.internalContacts), 
+					internalContacts: record.data.internalContacts, 
+					// internalContacts: makeUndefined(record.data.internalContacts), 
 				};
 			}
 		})

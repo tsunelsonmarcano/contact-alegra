@@ -93,6 +93,7 @@ class IndexController extends Zend_Controller_Action
         if (count($filter)) {
             $filter = json_decode($filter);
             $query = trim($filter[0]->property);
+            $query = str_replace(' ', '_', $query);
             $this->_client->setUri($this->_uri . "?start=$start&limit=$limit&metadata=true&query=$query");
             $response = $this->_client->request();
             $data = $this->_formattData($response->getBody());

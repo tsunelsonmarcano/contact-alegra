@@ -11,7 +11,7 @@ Ext.define('CrudExt.view.contact.Window', {
 
 	initComponent: function(){
 		this.items = [
-			Ext.widget('contactform')
+			Ext.widget('contactform'),
 		];
 		this.callParent(arguments);
 	}
